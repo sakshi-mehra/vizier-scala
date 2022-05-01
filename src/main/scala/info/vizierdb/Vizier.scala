@@ -15,19 +15,19 @@
 package info.vizierdb
 
 import scalikejdbc._
+
 import java.sql.DriverManager
-
-import org.mimirdb.api.{ MimirAPI, InitSpark, MimirConfig }
-import org.mimirdb.data.{ JDBCMetadataBackend => MimirJDBC, Catalog => MimirCatalog }
-
+import org.mimirdb.api.{InitSpark, MimirAPI, MimirConfig}
+import org.mimirdb.data.{Catalog => MimirCatalog, JDBCMetadataBackend => MimirJDBC}
 import info.vizierdb.types._
 import info.vizierdb.catalog.workarounds.SQLiteNoReadOnlyDriver
-import info.vizierdb.catalog.{ Project, Schema, Cell }
+import info.vizierdb.catalog.{Cell, Project, Schema}
 import org.mimirdb.data.LocalFSStagingProvider
+
 import java.io._
 import java.util.Properties
 import com.typesafe.scalalogging.LazyLogging
-import info.vizierdb.export.{ ExportProject, ImportProject }
+import info.vizierdb.export.{ExportProject, ImportProject}
 import info.vizierdb.util.Streams
 import org.mimirdb.util.ExperimentalOptions
 import info.vizierdb.commands.python.PythonProcess
@@ -35,8 +35,11 @@ import py4j.reflection.PythonProxyHandler
 import info.vizierdb.catalog.Doctor
 import info.vizierdb.commands.python.SparkPythonUDFRelay
 import org.apache.spark.UDTRegistrationProxy
+import com.vizier.stub.StubServerApplication
+
 import java.awt.image.BufferedImage
 import org.apache.spark.sql.types.ImageUDT
+
 import scala.sys.process.Process
 import org.mimirdb.caveats.Caveat
 import info.vizierdb.util.StringUtils
@@ -127,6 +130,14 @@ object Vizier
     ) 
   }
 
+  def startStubServer(): Unit = {
+    print("Starting stubserver")
+//    StubServerApplication.main(Array[String]())
+    System.getProperty("user.dir")
+    val pb = new ProcessBuilder("pwd")
+    pb.start()
+  }
+
   def bringDatabaseToSaneState()
   {
     DB.autoCommit { implicit s => 
@@ -175,6 +186,7 @@ object Vizier
     initSQLite()
     Schema.initialize()
     initORMLogging()
+    startStubServer()
     bringDatabaseToSaneState()
     if(config.workingDirectory.isDefined){
       System.setProperty("user.dir", config.workingDirectory())
