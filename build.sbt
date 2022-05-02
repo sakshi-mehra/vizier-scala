@@ -94,8 +94,6 @@ libraryDependencies ++= Seq(
   // Mimir
   "org.mimirdb"                   %% "mimir-api"                        % MIMIR_VERSION,
   "org.mimirdb"                   %% "mimir-caveats"                    % CAVEATS_VERSION,
-  //StubServer
-
 
   // Catalog management (trying this out... might be good to bring into mimir-api as well)
   "org.scalikejdbc"               %% "scalikejdbc"                      % "3.4.2",

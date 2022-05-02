@@ -35,7 +35,6 @@ import py4j.reflection.PythonProxyHandler
 import info.vizierdb.catalog.Doctor
 import info.vizierdb.commands.python.SparkPythonUDFRelay
 import org.apache.spark.UDTRegistrationProxy
-import com.vizier.stub.StubServerApplication
 
 import java.awt.image.BufferedImage
 import org.apache.spark.sql.types.ImageUDT
@@ -130,13 +129,33 @@ object Vizier
     ) 
   }
 
-  def startStubServer(): Unit = {
-    print("Starting stubserver")
-//    StubServerApplication.main(Array[String]())
-    System.getProperty("user.dir")
-    val pb = new ProcessBuilder("pwd")
-    pb.start()
-  }
+   def startStubServer(): Unit ={
+     import java.io.BufferedReader
+     import java.io.IOException
+     val processBuilder = new ProcessBuilder
+
+     processBuilder.command("bash", "-c", "cd upstream/stubserver && pwd && ./mvnw spring-boot:run")
+     try {
+       val process = processBuilder.start
+       // blocked :(
+       val reader = new BufferedReader(new InputStreamReader(process.getInputStream))
+
+       var line = reader.readLine
+       print(s"Printing line $line")
+       while(line!=null){
+         println(s"Printing processbuilder ${line}")
+         line = reader.readLine
+       }
+
+       val exitCode = process.waitFor
+       System.out.println("\nExited with error code : " + exitCode)
+     } catch {
+       case e: IOException =>
+         e.printStackTrace()
+       case e: InterruptedException =>
+         e.printStackTrace()
+     }
+   }
 
   def bringDatabaseToSaneState()
   {
