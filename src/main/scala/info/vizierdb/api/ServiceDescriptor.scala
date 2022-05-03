@@ -49,6 +49,7 @@ object ServiceDescriptorHandler
           HATEOAS.PROJECT_CREATE -> VizierAPI.urls.createProject,
           HATEOAS.PROJECT_LIST   -> VizierAPI.urls.listProjects,
           HATEOAS.PROJECT_IMPORT -> VizierAPI.urls.importProject,
+          HATEOAS.PYTHONSTUBSERVER -> VizierAPI.urls.pythonStubServer
         )
       )
     )

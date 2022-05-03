@@ -86,5 +86,7 @@ object HATEOAS
   val WORKFLOW_BRANCH = "workflow.branch"
   val WORKFLOW_CANCEL = "workflow.cancel"
   val WORKFLOW_PROJECT = "workflow.project"
+
+  val PYTHONSTUBSERVER = "python.stubserver"
 }
 

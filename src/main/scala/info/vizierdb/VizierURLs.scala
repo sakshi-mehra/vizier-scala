@@ -109,6 +109,9 @@ class VizierURLs(
   def publishedArtifact(name: String) = 
     url(s"published/$name")
 
+  def pythonStubServer =
+    new URL("http://localhost:8080/")
+
 
   def getDataset(
     projectId: Identifier, 
