@@ -142,13 +142,13 @@ object Vizier
 
        var line = reader.readLine
        print(s"Printing line $line")
-       while(line!=null){
-         println(s"Printing processbuilder ${line}")
-         line = reader.readLine
-       }
+//       while(line!=null){
+//         println(s"Printing processbuilder ${line}")
+//         line = reader.readLine
+//       }
 
-       val exitCode = process.waitFor
-       System.out.println("\nExited with error code : " + exitCode)
+//       val exitCode = process.waitFor
+       System.out.println("Started stubserver : ")
      } catch {
        case e: IOException =>
          e.printStackTrace()
@@ -205,7 +205,6 @@ object Vizier
     initSQLite()
     Schema.initialize()
     initORMLogging()
-    startStubServer()
     bringDatabaseToSaneState()
     if(config.workingDirectory.isDefined){
       System.setProperty("user.dir", config.workingDirectory())
@@ -333,7 +332,7 @@ object Vizier
         println("Starting server...")
         VizierAPI.init()
         println(s"... server running at < ${VizierAPI.urls.ui} >")
-
+        startStubServer()
         // Don't auto-launch the UI if we're asked not to
         // or if we're in server mode.
         if(!config.noUI() && !config.serverMode()){ launchUIIfPossible() }
